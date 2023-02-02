@@ -1,12 +1,16 @@
 asgiref==3.5.2
 attrs==21.4.0
+dj-database-url==1.2.0
 Django==4.0.6
 iniconfig==1.1.1
 packaging==21.3
 pluggy==1.0.0
+psycopg2==2.9.5
 py==1.11.0
 pyparsing==3.0.9
 pytest==7.1.2
 pytest-django==4.5.2
+python-decouple==3.7
 sqlparse==0.4.2
 tomli==2.0.1
+typing_extensions==4.4.0
