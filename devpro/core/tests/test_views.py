@@ -26,7 +26,7 @@ def book(db):
 def test_list_all_authors(client):
     Author.objects.bulk_create(Author(name=f'Author {i}') for i in range(10))
 
-    response = client.get(list_authors_url, data={'page': 2, 'page_size': 5})
+    response = client.get('/api/authors/', data={'page': 2, 'page_size': 5})
 
     assert response.status_code == HTTPStatus.OK
     assert response.json()['num_pages'] == 2
