@@ -1,11 +1,9 @@
 name: Deploy
 
 on:
-  pull_request:
-    branches:
-      - main
   push:
     branches:
+      - main
       - deploy-workflow
 
 jobs:
@@ -28,4 +26,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: registry.digitalocean.com/walison-devpro/devpro/rest-na-pratica:${{ github.sha }}
+          tags: >
+            registry.digitalocean.com/walison-devpro/devpro/rest-na-pratica:${{ github.sha }},
+            registry.digitalocean.com/walison-devpro/devpro/rest-na-pratica:latest
