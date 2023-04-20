@@ -21,11 +21,26 @@ jobs:
       - name: Login do container registry
         run: doctl registry login
 
-      - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: >
-            registry.digitalocean.com/walison-devpro/devpro/rest-na-pratica:${{ github.sha }},
-            registry.digitalocean.com/walison-devpro/devpro/rest-na-pratica:latest
+      # - name: Build and push
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: >
+      #       registry.digitalocean.com/walison-devpro/devpro/rest-na-pratica:${{ github.sha }},
+      #       registry.digitalocean.com/walison-devpro/devpro/rest-na-pratica:latest
+
+      - name: Add the private SSH key to the ssh-agent
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p ~/.ssh
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-add - <<< "${{ secrets.PRIVATE_SSH_KEY }}"
+
+      - name: Build and deploy images on DigitalOcean
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          scp  -o StrictHostKeyChecking=no docker-compose.prod.yml root@${{ secrets.HOST }}:/root/app/docker-compose.prod.yml
