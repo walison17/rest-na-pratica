@@ -19,9 +19,9 @@ class Author(models.Model):
 
 
 class Book(models.Model):
-    name = models.CharField(max_length=128)
-    edition = models.PositiveSmallIntegerField()
-    publication_year = models.PositiveSmallIntegerField()
+    name = models.CharField(max_length=128, verbose_name="Nome")
+    edition = models.PositiveSmallIntegerField(verbose_name="Edição")
+    publication_year = models.PositiveSmallIntegerField(verbose_name="Ano de publicação")
     authors = models.ManyToManyField(Author, related_name='books')
 
     class Meta:

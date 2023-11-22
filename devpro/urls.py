@@ -16,7 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from devpro.core.views import book_create
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('devpro.core.urls'))
+    path('api/', include('devpro.core.urls')),
+    path('book-create/', book_create, name='book_create'),
 ]
