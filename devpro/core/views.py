@@ -1,9 +1,13 @@
+from collections.abc import Sequence
 from csv import DictWriter
 import json
 from http import HTTPStatus
+from typing import Any
+from django.db.models.query import QuerySet
 
 from django.http import JsonResponse, HttpResponse, HttpResponseNotAllowed
 from django.core.paginator import Paginator
+from django.views.generic import ListView
 from django.db.models import Q
 from django.shortcuts import redirect, render, resolve_url, get_object_or_404
 from django.utils import timezone
@@ -137,3 +141,24 @@ def book_create(request):
         form = BookForm()
 
     return render(request, "core/book_create.html", {"form": form})
+
+
+class BookListView(ListView):
+    model = Book
+    paginate_by = 15
+
+    def get_queryset(self) -> QuerySet[Any]:
+        queryset = super().get_queryset()
+        if search := self.request.GET.get("search"):
+            queryset = queryset.filter(name__icontains=search)
+
+        return queryset
+
+    def get_ordering(self) -> Sequence[str]:
+        return self.request.GET.get("order")
+
+    def get_template_names(self) -> list[str]:
+        templates = super().get_template_names()
+        if self.request.headers.get("Hx-Request"):
+            templates.insert(0, "core/htmx/book_table.html")
+        return templates

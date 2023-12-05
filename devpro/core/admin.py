@@ -14,6 +14,7 @@ class BookAdmin(admin.ModelAdmin):
     ordering = ('publication_year', 'name')
     list_filter = ('publication_year',)
     actions = ['export_csv']
+    list_per_page = 50
 
     @admin.display(description='Authors')
     def get_authors(self, obj):
