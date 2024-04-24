@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'devpro.core',
+    'devpro.uploads',
     "widget_tweaks",
 ]
 
@@ -123,9 +124,15 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+MEDIA_URL = 'uploads/'
+MEDIA_ROOT = BASE_DIR / "mediafiles"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 FORM_RENDERER = "devpro.core.form_renderers.BootstrapRenderer"
+
+R2_ENDPOINT_URL = config("R2_ENDPOINT_URL", default=None)
+R2_BUCKET = config("R2_BUCKET", default="devpro")

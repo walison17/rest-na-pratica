@@ -29,7 +29,7 @@ class BookForm(forms.Form):
 class BookModelForm(forms.ModelForm):
     class Meta:
         model = Book
-        fields = ["name", "edition", "publication_year"]
+        fields = ["name", "edition", "publication_year", "cover"]
 
     def clean_name(self):
         name = self.cleaned_data["name"]

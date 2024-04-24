@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 
 from devpro.core.views import book_create
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('devpro.core.urls')),
+    path('api/', include('devpro.uploads.urls')),
     path('book-create/', book_create, name='book_create'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
