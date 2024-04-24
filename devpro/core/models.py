@@ -18,11 +18,16 @@ class Author(models.Model):
         }
 
 
+def book_image_directory(instance, filename):
+    return f"books/{instance.id}/{filename}"
+
+
 class Book(models.Model):
-    name = models.CharField(max_length=128)
-    edition = models.PositiveSmallIntegerField()
-    publication_year = models.PositiveSmallIntegerField()
+    name = models.CharField(max_length=128, verbose_name="Nome")
+    edition = models.PositiveSmallIntegerField(verbose_name="Edição")
+    publication_year = models.PositiveSmallIntegerField(verbose_name="Ano de publicação")
     authors = models.ManyToManyField(Author, related_name='books')
+    cover = models.ImageField(verbose_name="Foto da capa", upload_to=book_image_directory, null=True)
 
     class Meta:
         ordering = ('name',)

@@ -5,9 +5,10 @@ from http import HTTPStatus
 from django.http import JsonResponse, HttpResponse, HttpResponseNotAllowed
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.shortcuts import resolve_url, get_object_or_404
+from django.shortcuts import redirect, render, resolve_url, get_object_or_404
 from django.utils import timezone
 from django.contrib.admin.views.decorators import staff_member_required
+from devpro.core.forms import BookModelForm as BookForm
 
 from devpro.core.models import Author, Book
 
@@ -124,3 +125,18 @@ def export_csv(request):
         )
 
     return response
+
+
+def book_create(request):
+    if request.method == "POST":
+        form = BookForm(request.POST, request.FILES)
+        if form.is_valid():
+            cover = form.cleaned_data.pop("cover")
+            book = Book.objects.create(**form.cleaned_data)
+            book.cover.save(cover.name, cover, save=True)
+
+            return redirect("book_create")
+    else:
+        form = BookForm()
+
+    return render(request, "core/book_create.html", {"form": form})
