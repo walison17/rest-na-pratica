@@ -14,26 +14,38 @@ services:
     image: devpro-rest:dev
     env_file: .env
     depends_on:
-      - postgres
+      - mysql
     # command: wait-for-it postgres:5432 -- python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
 
-  postgres:
-    image: postgres
+  mysql:
+    image: mysql:8.4
     ports:
-      - 5432:5432
-    volumes:
-      - postgres:/var/lib/postgresql/data
+      - 3306:3306
     environment:
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_USER: devpro-rest
-    # healthcheck:
-    #   test: pg_isready -U devpro-rest
-    #   interval: 2s
-    #   timeout: 10s
-    #   retries: 5
-    #   start_period: 3s
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: devpro
+      MYSQL_USER: devpro
+      MYSQL_PASSWORD: devpro
+    volumes:
+      - mysqldata:/var/lib/mysql
+
+  # postgres:
+  #   image: postgres
+  #   ports:
+  #     - 5432:5432
+  #   volumes:
+  #     - postgres:/var/lib/postgresql/data
+  #   environment:
+  #     POSTGRES_PASSWORD: mysecretpassword
+  #     POSTGRES_USER: devpro-rest
+  #   # healthcheck:
+  #   #   test: pg_isready -U devpro-rest
+  #   #   interval: 2s
+  #   #   timeout: 10s
+  #   #   retries: 5
+  #   #   start_period: 3s
 
 volumes:
-  postgres:
+  mysqldata:
